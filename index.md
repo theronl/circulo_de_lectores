@@ -5,4 +5,4 @@ Books
 
 ***
 
-This website was last updated on {{ site.time | date: "%B %d, %Y" }}.
+This website was last updated on {{ site.time | date: "%B %d, %Y at %H:%M %Z" }}.
