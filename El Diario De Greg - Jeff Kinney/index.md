@@ -3,7 +3,7 @@ layout: default
 title: My Filtered Archive
 ---
 
-{% assign dir_name = p.dir | split: "/" | last %}
+{% assign dir_name = p.dir | slice: 0, -1 | split: "/" | last %}
 
 # {{ dir_name }} With Cheese
 
