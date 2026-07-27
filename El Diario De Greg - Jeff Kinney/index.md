@@ -3,10 +3,9 @@ layout: default
 title: My Filtered Archive
 ---
 
-{% assign dir_parts = p.dir | split: "/" | compact %}
-{% assign last_folder = dir_parts | last %}
+{% assign dir_name = p.dir | split: "/" | last %}
 
-# {{ last_folder | default: p.dir }}
+# {{ dir_name }} With Cheese
 
 <ul>
   {% comment %}
