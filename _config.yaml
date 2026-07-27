@@ -4,3 +4,4 @@ description: Este es un club de lectura en el que leemos libros en español y re
 timezone: America/Costa_Rica   # Sets your site's default timezone
 site_pages: []
 header_pages: []
+include_paths: []
