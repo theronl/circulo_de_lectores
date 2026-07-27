@@ -1,9 +1,9 @@
 ---
 layout: default
-title: My Filtered Archive
+title: Reunions
 ---
 
-# {{ page.dir | replace: "/", "" | replace: "%20", " " | replace: "-", "de" }}
+# {{ page.dir | replace: "/", "" | replace: "%20", " " }}
 
 <ul>
   {% comment %}
