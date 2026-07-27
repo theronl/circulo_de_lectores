@@ -1,4 +1,4 @@
-# El Diario De Greg - Jeff Kinney
+## El Diario De Greg - Jeff Kinney
 
 * [Reunion July 26, 2026](20260726_notas.md) 
 
