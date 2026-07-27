@@ -3,7 +3,10 @@ layout: default
 title: My Filtered Archive
 ---
 
-# Document Archive
+{% assign dir_parts = p.dir | split: "/" | compact %}
+{% assign last_folder = dir_parts | last %}
+
+# {{ last_folder }}
 
 <ul>
   {% comment %}
@@ -40,9 +43,11 @@ title: My Filtered Archive
 
 
 
+  {% comment %}
 ## El Diario De Greg - Jeff Kinney
 
 * [Reunion July 26, 2026](20260726_notas.md) 
+  {% endcomment %}
 
 ***
 
