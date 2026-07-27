@@ -2,7 +2,7 @@
 
 # Setup the markdown index file cleanly
 cat <<EOF > index.md
-## El Diario De Greg - Jeff Kinney
+# El Diario De Greg - Jeff Kinney
 
 EOF
 
