@@ -1,7 +1,6 @@
-theme: minima
+theme: primer
+# theme: minima
 title: Club de lectura en español
 description: Este es un club de lectura en el que leemos libros en español y repasamos los pasajes o las palabras que nos resultan difíciles.
 timezone: America/Costa_Rica   # Sets your site's default timezone
-site.pages: []
-header.pages: []
-include.paths: []
+
