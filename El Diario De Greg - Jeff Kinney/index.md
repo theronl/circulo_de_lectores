@@ -3,9 +3,7 @@ layout: default
 title: My Filtered Archive
 ---
 
-{% assign dir_name = p.dir | slice: 0, -1 | split: "/" | last %}
-
-# {{ dir_name }} With Cheese or {{ page.dir }}
+# {{ page.dir | slice 1, -1 | url_decode }}
 
 <ul>
   {% comment %}
