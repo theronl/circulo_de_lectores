@@ -25,7 +25,7 @@
   {% endcomment %}
   {% assign sub_pages = "" | split: "" %}
   {% for p in site.pages %}
-  <p>WAKKA {{ p.name }}</p>
+  <p>WAKKA {{ p.dir }}</p>
     {% if p.dir contains current_dir and p.dir != current_dir %}
       {% assign p_depth = p.dir | split: "/" | size %}
       {% if p_depth == current_depth %}
