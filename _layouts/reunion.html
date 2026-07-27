@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en-US" }}">
+<html lang="{{ page.lang | default: site.lang | default: "en-ES" }}">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@
       {% assign current_dir = page.dir %}
       {% assign current_dir_name =  current_dir | replace: "/", "" | replace: "%20", " " %}
 
-      <h2><a href="{{ current_dir }}">{{ current_dir_name }}</a></h2>
+      <h2><a href="{{ "/" | absolute_url }}{{ current_dir }}">{{ current_dir_name }}</a></h2>
       
       {{ content }}
 

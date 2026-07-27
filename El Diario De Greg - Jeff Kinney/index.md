@@ -30,7 +30,7 @@ title: Reunions
       {% if file_start == "20" and p.url != page.url %}
         <li>
           <a href="{{ p.url | relative_url }}">
-            Reunion {{ p.title | default: filename }}
+             {{ p.title | default: filename }}
           </a>
         </li>
       {% endif %}
