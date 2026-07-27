@@ -28,14 +28,11 @@
   {% endcomment %}
   {% assign sub_pages = "" | split: "" %}
   {% for p in site.pages %}
-  <p>WAKKA {{ p.dir }} - {{ current_dir }}</p>
   {% if p.dir contains current_dir and p.dir != current_dir %}
     {% unless p.dir contains "/assets/" %}
   {% assign p_depth = p.dir | split: "/" | size %}
     
-  <p>banana {{ p.dir }} - {{ current_dir }} depth: {{ current_depth }} {{p_depth}}</p>
   {% if p_depth == current_depth %}
-  <p>It's a sign!!</p>
   {% assign sub_pages = sub_pages | push: p %}
   {% endif %}
   {% endunless %}
@@ -57,7 +54,6 @@
     
     {% comment %} Extract the clean folder name for your fallback {% endcomment %}
     {% assign folder_name = folder_path | replace_first: current_dir, "" | split: "/" | first %}
-    <li> folder_name: {{ folder_name }}</li>
     {% assign first_char = folder_name | slice: 0 %}
 
     {% comment %} Skip system/hidden folders {% endcomment %}
