@@ -29,12 +29,16 @@
   {% assign sub_pages = "" | split: "" %}
   {% for p in site.pages %}
   <p>WAKKA {{ p.dir }} - {{ current_dir }}</p>
-    {% if p.dir contains current_dir and p.dir != current_dir %}
-      {% assign p_depth = p.dir | split: "/" | size %}
+  {% if p.dir contains current_dir and p.dir != current_dir %}
+    {% unless p.dir contains "/assets/" %}
+  {% assign p_depth = p.dir | split: "/" | size %}
+    
   <p>banana {{ p.dir }} - {{ current_dir }} depth: {{ current_depth }} {{p_depth}}</p>
-      {% if p_depth == current_depth + 1 %}
+  {% if p_depth == current_depth + 1 %}
+  <p>It's a sign!!</p>
   {% assign sub_pages = sub_pages | push: p %}
-      {% endif %}
+  {% endif %}
+  {% endunless %}
     {% endif %}
   {% endfor %}
 
