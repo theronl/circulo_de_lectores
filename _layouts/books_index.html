@@ -17,7 +17,6 @@
 
       <h3>Libros</h3>
       
-<ul>
   {% assign current_dir = page.dir %}
   {% assign current_depth = current_dir | split: "/" | size %}
 
@@ -29,7 +28,8 @@
     {% if p.dir contains current_dir and p.dir != current_dir %}
       {% assign p_depth = p.dir | split: "/" | size %}
       {% if p_depth == current_depth %}
-        {% assign sub_pages = sub_pages | push: p %}
+  {% assign sub_pages = sub_pages | push: p %}
+  <p>WAKKA {{ p.name }}</p>
       {% endif %}
     {% endif %}
   {% endfor %}
@@ -40,7 +40,8 @@
   {% endcomment %}
   {% assign grouped_dirs = sub_pages | group_by: "dir" | sort: "name" %}
 
-  {% comment %} 
+  <ul>
+    {% comment %} 
     3. Loop through your cleanly isolated folders
   {% endcomment %}
   {% for group in grouped_dirs %}
@@ -48,6 +49,7 @@
     
     {% comment %} Extract the clean folder name for your fallback {% endcomment %}
     {% assign folder_name = folder_path | replace_first: current_dir, "" | split: "/" | first %}
+    <li> folder_name: {{ folder_name }}</li>
     {% assign first_char = folder_name | slice: 0 %}
 
     {% comment %} Skip system/hidden folders {% endcomment %}
