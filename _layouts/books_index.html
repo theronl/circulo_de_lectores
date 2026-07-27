@@ -18,8 +18,11 @@
       <h3>Libros</h3>
       
   {% assign current_dir = page.dir %}
-  {% assign current_depth = current_dir | split: "/" | size %}
-
+      {% assign current_depth = current_dir | split: "/" | size %}
+      {% if current_depth == 0 %}
+      {% assign current_depth = 1 %}
+      {% endif %}
+      
   {% comment %} 
     1. Filter the entire page list down to just immediate sub-items first 
   {% endcomment %}
@@ -29,7 +32,7 @@
     {% if p.dir contains current_dir and p.dir != current_dir %}
       {% assign p_depth = p.dir | split: "/" | size %}
   <p>banana {{ p.dir }} - {{ current_dir }} depth: {{ current_depth }} {{p_depth}}</p>
-      {% if p_depth == current_depth %}
+      {% if p_depth == current_depth + 1 %}
   {% assign sub_pages = sub_pages | push: p %}
       {% endif %}
     {% endif %}
