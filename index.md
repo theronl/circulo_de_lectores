@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: book_index
 title: Circulo de Lectores Españolas
 ---
 
