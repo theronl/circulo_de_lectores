@@ -33,7 +33,7 @@
     {% unless p.dir contains "/assets/" %}
   {% assign p_depth = p.dir | split: "/" | size %}
     
-  <p>banana {{ p.dir }} - {{ current_dir }} depth: {{ current_depth }} {{p_depth}}</p>
+  <p>banana {{ p.dir }} - {{ current_dir }} depth: {{ current_depth + 1 }} {{p_depth}}</p>
   {% if p_depth == current_depth + 1 %}
   <p>It's a sign!!</p>
   {% assign sub_pages = sub_pages | push: p %}
