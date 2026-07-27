@@ -3,7 +3,11 @@ layout: default
 title: Reunions
 ---
 
-# {{ page.dir | replace: "/", "" | replace: "%20", " " }}
+{% assign current_dir = page.dir %}
+{% assign current_dir_name =  current_dir | replace: "/", "" | replace: "%20", " " %}
+{% assign all_pages = site.pages | sort: "path" | reverse %}
+
+# {{ current_dir_name }}
 
 <ul>
   {% comment %}
@@ -12,8 +16,6 @@ title: Reunions
     3. Sort alphabetically by path, then reverse it (Z to A / Newest to Oldest).
   {% endcomment %}
   
-  {% assign current_dir = page.dir %}
-  {% assign all_pages = site.pages | sort: "path" | reverse %}
 
   {% for p in all_pages %}
     {% if p.dir == current_dir %}
