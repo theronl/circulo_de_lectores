@@ -20,7 +20,7 @@
   {% assign current_dir = page.dir %}
       {% assign current_depth = current_dir | split: "/" | size %}
       {% if current_depth == 0 %}
-      {% assign current_depth = 1 %}
+      {% assign current_depth = 2 %}
       {% endif %}
       
   {% comment %} 
@@ -33,8 +33,8 @@
     {% unless p.dir contains "/assets/" %}
   {% assign p_depth = p.dir | split: "/" | size %}
     
-  <p>banana {{ p.dir }} - {{ current_dir }} depth: {{ current_depth + 1 }} {{p_depth}}</p>
-  {% if p_depth == current_depth + 1 %}
+  <p>banana {{ p.dir }} - {{ current_dir }} depth: {{ current_depth }} {{p_depth}}</p>
+  {% if p_depth == current_depth %}
   <p>It's a sign!!</p>
   {% assign sub_pages = sub_pages | push: p %}
   {% endif %}
