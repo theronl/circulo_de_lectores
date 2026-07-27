@@ -3,7 +3,7 @@ layout: default
 title: My Filtered Archive
 ---
 
-# {{ page.dir | replace: "/" "" | replace: "%20", " " | replace: "-" "de" }}
+# {{ page.dir | replace: "/", "" | replace: "%20", " " | replace: "-", "de" }}
 
 <ul>
   {% comment %}
