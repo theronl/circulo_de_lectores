@@ -6,7 +6,7 @@ title: My Filtered Archive
 {% assign dir_parts = p.dir | split: "/" | compact %}
 {% assign last_folder = dir_parts | last %}
 
-# {{ last_folder }}
+# {{ last_folder | default: p.dir }}
 
 <ul>
   {% comment %}
@@ -31,7 +31,7 @@ title: My Filtered Archive
       {% if file_start == "20" and p.url != page.url %}
         <li>
           <a href="{{ p.url | relative_url }}">
-            {{ p.title | default: filename }}
+            Reunion {{ p.title | default: filename }}
           </a>
         </li>
       {% endif %}
