@@ -19,8 +19,7 @@
 
       {% if site.github.private != true and site.github.license %}
       <div class="footer border-top border-gray-light mt-5 pt-3 text-center text-gray">
-        <p>This website was last published on {{ site.time | date: "%B %d, %Y at %H:%M %Z" }}
-          {% github_edit_link "(source)" %}.</p>
+        <p>{% github_edit_link "This" %} website was last published on {{ site.time | date: "%B %d, %Y at %H:%M %Z" }}</p>
       </div>
       {% endif %}
     </div>
