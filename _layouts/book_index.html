@@ -15,67 +15,41 @@
       <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
       {% endif %}
 
-      <h3>Libros</h3>
-      
-<ul>
-  {% assign current_dir = page.dir %}
-  {% assign current_depth = current_dir | split: "/" | size %}
+{% assign current_dir = page.dir %}
+{% assign current_dir_name = current_dir | replace: "/", "" | replace: "%20", " " %}
 
-  {% comment %} 
-    1. Filter the entire page list down to just immediate sub-items first 
+<h2>{{ current_dir_name }}</h2>
+
+<ul>
+  {% comment %}
+    1. Get all pages in the site.
+    2. Filter to keep only pages in the current directory.
+    3. Sort alphabetically by path, then reverse it (Z to A / Newest to Oldest).
   {% endcomment %}
-  {% assign sub_pages = "" | split: "" %}
-  {% for p in site.pages %}
-    {% if p.dir contains current_dir and p.dir != current_dir %}
-      {% assign p_depth = p.dir | split: "/" | size %}
-      {% if p_depth == current_depth %}
-        {% assign sub_pages = sub_pages | push: p %}
+  
+
+  {% assign all_pages = site.pages | sort: "path" | reverse %}
+  {% for p in all_pages %}
+    {% if p.dir == current_dir %}
+      
+      {% comment %}
+        Extract just the filename from the full path to check for "20".
+        Example path: "notes/2026-b.md" -> split by "/" -> last item is "2026-b.md".
+      {% endcomment %}
+      {% assign filename = p.path | split: "/" | last %}
+      {% assign file_start = filename | slice: 0, 2 %}
+
+      {% if file_start == "20" and p.url != page.url %}
+        <li>
+          <a href="{{ p.url | relative_url }}">
+             {{ p.title | default: filename }}
+          </a>
+        </li>
       {% endif %}
+ 
     {% endif %}
   {% endfor %}
-
-  {% comment %} 
-    2. Group all matching pages by their directory path.
-       This automatically deduplicates the folders for you!
-  {% endcomment %}
-  {% assign grouped_dirs = sub_pages | group_by: "dir" | sort: "name" %}
-
-  {% comment %} 
-    3. Loop through your cleanly isolated folders
-  {% endcomment %}
-  {% for group in grouped_dirs %}
-    {% assign folder_path = group.name %}
-    
-    {% comment %} Extract the clean folder name for your fallback {% endcomment %}
-    {% assign folder_name = folder_path | replace_first: current_dir, "" | split: "/" | first %}
-    {% assign first_char = folder_name | slice: 0 %}
-
-    {% comment %} Skip system/hidden folders {% endcomment %}
-    {% unless first_char == "." or first_char == "_" or folder_name == empty %}
-      
-      {% comment %} 
-        Find the true index.md page object inside this directory group
-      {% endcomment %}
-      {% assign target_page = nil %}
-      {% for p in group.items %}
-        {% if p.name == "index.md" or p.name == "index.html" %}
-          {% assign target_page = p %}
-        {% endif %}
-      {% endfor %}
-
-      {% comment %} Determine display title: index page title OR fallback to folder name {% endcomment %}
-      {% assign display_title = target_page.title | default: folder_name | url_decode %}
-
-      <li>
-        <a href="{{ folder_path | relative_url }}">
-          {{ display_title }}
-        </a>
-      </li>
-
-    {% endunless %}
-  {% endfor %}
 </ul>
-      
 
       {{ content }}
 

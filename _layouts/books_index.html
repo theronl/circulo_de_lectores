@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% seo %}
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    {% include head-custom.html %}
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      {% if site.title and site.title != page.title %}
+      <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
+      {% endif %}
+
+      <h3>Libros</h3>
+      
+<ul>
+  {% assign current_dir = page.dir %}
+  {% assign current_depth = current_dir | split: "/" | size %}
+
+  {% comment %} 
+    1. Filter the entire page list down to just immediate sub-items first 
+  {% endcomment %}
+  {% assign sub_pages = "" | split: "" %}
+  {% for p in site.pages %}
+    {% if p.dir contains current_dir and p.dir != current_dir %}
+      {% assign p_depth = p.dir | split: "/" | size %}
+      {% if p_depth == current_depth %}
+        {% assign sub_pages = sub_pages | push: p %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% comment %} 
+    2. Group all matching pages by their directory path.
+       This automatically deduplicates the folders for you!
+  {% endcomment %}
+  {% assign grouped_dirs = sub_pages | group_by: "dir" | sort: "name" %}
+
+  {% comment %} 
+    3. Loop through your cleanly isolated folders
+  {% endcomment %}
+  {% for group in grouped_dirs %}
+    {% assign folder_path = group.name %}
+    
+    {% comment %} Extract the clean folder name for your fallback {% endcomment %}
+    {% assign folder_name = folder_path | replace_first: current_dir, "" | split: "/" | first %}
+    {% assign first_char = folder_name | slice: 0 %}
+
+    {% comment %} Skip system/hidden folders {% endcomment %}
+    {% unless first_char == "." or first_char == "_" or folder_name == empty %}
+      
+      {% comment %} 
+        Find the true index.md page object inside this directory group
+      {% endcomment %}
+      {% assign target_page = nil %}
+      {% for p in group.items %}
+        {% if p.name == "index.md" or p.name == "index.html" %}
+          {% assign target_page = p %}
+        {% endif %}
+      {% endfor %}
+
+      {% comment %} Determine display title: index page title OR fallback to folder name {% endcomment %}
+      {% assign display_title = target_page.title | default: folder_name | url_decode %}
+
+      <li>
+        <a href="{{ folder_path | relative_url }}">
+          {{ display_title }}
+        </a>
+      </li>
+
+    {% endunless %}
+  {% endfor %}
+</ul>
+      
+
+      {{ content }}
+
+      {% if site.github.private != true and site.github.license %}
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-center text-gray">
+        <p>{% github_edit_link "This" %} website was last published on {{ site.time | date: "%B %d, %Y at %H:%M %Z" }}</p>
+      </div>
+      {% endif %}
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>
