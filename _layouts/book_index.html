@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en-US" }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+{% seo %}
+    <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
+    {% include head-custom.html %}
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      {% if site.title and site.title != page.title %}
+      <h1><a href="{{ "/" | absolute_url }}">{{ site.title }}</a></h1>
+      {% endif %}
+
+{% assign current_dir = page.dir %}
+{% assign current_dir_name = current_dir | replace: "/", "" | replace: "%20", " " %}
+
+# {{ current_dir_name }}
+
+<ul>
+  {% comment %}
+    1. Get all pages in the site.
+    2. Filter to keep only pages in the current directory.
+    3. Sort alphabetically by path, then reverse it (Z to A / Newest to Oldest).
+  {% endcomment %}
+  
+
+  {% assign all_pages = site.pages | sort: "path" | reverse %}
+  {% for p in all_pages %}
+    {% if p.dir == current_dir %}
+      
+      {% comment %}
+        Extract just the filename from the full path to check for "20".
+        Example path: "notes/2026-b.md" -> split by "/" -> last item is "2026-b.md".
+      {% endcomment %}
+      {% assign filename = p.path | split: "/" | last %}
+      {% assign file_start = filename | slice: 0, 2 %}
+
+      {% if file_start == "20" and p.url != page.url %}
+        <li>
+          <a href="{{ p.url | relative_url }}">
+             {{ p.title | default: filename }}
+          </a>
+        </li>
+      {% endif %}
+ 
+    {% endif %}
+  {% endfor %}
+</ul>
+
+      {{ content }}
+
+      {% if site.github.private != true and site.github.license %}
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-center text-gray">
+        <p>{% github_edit_link "This" %} website was last published on {{ site.time | date: "%B %d, %Y at %H:%M %Z" }}</p>
+      </div>
+      {% endif %}
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>
