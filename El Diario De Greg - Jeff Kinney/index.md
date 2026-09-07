@@ -5,6 +5,6 @@ title: El Diario De Greg de Jeff Kinney - Comensado Jul 21,2026
 
 ***
 
-El libro se enquentra [aqui](https://archive.org/details/eldiariodegreg)
+El libro Española se enquentra [aqui](https://archive.org/details/eldiariodegreg)
 
 ---
