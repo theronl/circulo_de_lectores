@@ -56,6 +56,10 @@ tbody.innerHTML = '';
 
 if (files.length === 0) {
   tbody.innerHTML = '<tr><td colspan="4">No se encontraron archivos de notas.</td></tr>';
+} else {
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<tr><td colspan="4">Lo encontramos!</td></tr>';
+  tbody.appendChild(tr);
 }
 
 // Keep track of total outstanding fetch processes to initialize live text searching safely
