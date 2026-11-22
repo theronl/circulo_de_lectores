@@ -70,14 +70,16 @@ files.forEach(fileObj => {
         .then(({ doc, rows}) => {
             if (rows) {
                 rows.forEach(cells => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
+                    if (cells[0].trim()) {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
               <td class="cell-date">${fileObj.date}</td>
               <td class="cell-word"><strong>${cells[0]}</strong></td>
               <td class="cell-trans">${cells[1]}</td>
               <td class="cell-notes">${cells[2] || ''}</td>
             `;
-                    tbody.appendChild(tr);
+                        tbody.appendChild(tr);
+                    }
                 });
             }
             else {
