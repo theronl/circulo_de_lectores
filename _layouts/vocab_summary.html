@@ -68,16 +68,21 @@ let filesProcessed = 0;
 files.forEach(fileObj => {
   loadAndParsePage(fileObj.url)
         .then(({ doc, firstTable }) => {
-            firstTable.forEach(cells => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
+            if (firstTable != null) {
+                firstTable.forEach(cells => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
               <td class="cell-date">${fileObj.date}</td>
               <td class="cell-word"><strong>${cells[0]}</strong></td>
               <td class="cell-trans">${cells[1]}</td>
               <td class="cell-notes">${cells[2] || ''}</td>
             `;
-                tbody.appendChild(tr);
-            });
+                    tbody.appendChild(tr);
+                });
+            }
+            else {
+                console.log("firstTable is null for file:", fileObj.url);
+            }
         })
         .catch((err) => {
             console.error("Error:", err);
