@@ -75,7 +75,8 @@ files.forEach(fileObj => {
       const lines = text.split('\n');
       
       lines.forEach(line => {
-        const trimmed = line.trim();
+      const trimmed = line.trim();
+      console.log("Processing line from file ", fileObj.url, ": ", line);
         // Match standard markdown table data row formats (skipping row dividers like |--|--)
         if (trimmed.startsWith('|') && trimmed.endsWith('|') && !trimmed.includes('---')) {
           const cells = trimmed.split('|').map(c => c.trim()).filter(c => c !== '');
