@@ -43,7 +43,7 @@ const files = [
   {%- if file.path == expected_path and file.path != page.path -%}
     {%- if filename contains "_notas.md" or filename contains "_notes.md" -%}
     {
-      url: "{{ file.url | relative_url | split: "/" | last }}",
+      url: "{{ file.url | absolute_url }}",
       date: "{{ filename | slice: 0, 8 }}"
     },
     {%- endif -%}
