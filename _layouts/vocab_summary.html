@@ -108,7 +108,7 @@ async function loadAndParsePage(url) {
   const doc = parser.parseFromString(htmlText, "text/html");
 
   // Query elements just like the live `document`
-  const firstTable = doc.querySelector("body > table");
+  const firstTable = doc.querySelector("body table");
   if (firstTable) {
       const rows = [...firstTable.querySelectorAll("tr")].map((tr) =>
             [...tr.querySelectorAll("th, td")].map((cell) => cell.textContent.trim()));
