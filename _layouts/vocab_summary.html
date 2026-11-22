@@ -32,35 +32,24 @@ title: "Combined Reading Group Notes"
 // 3. Liquid Loop auto-generates the Javascript Array at build time
 
 const files = [
-{%- assign path_parts = page.path | split: "/" -%}
-{%- assign last_index = path_parts.size | minus: 1 -%}
-{%- assign current_folder = "" -%}
-{%- for part in path_parts -%}
-  {%- if forloop.index0 < last_index -%}
-    {%- if current_folder == "" -%}
-      {%- assign current_folder = part -%}
-    {%- else -%}
-      {%- assign current_folder = current_folder | append: "/" | append: part -%}
-    {%- endif -%}
-  {%- endif -%}
-{%- endfor -%}
+{%- assign page_filename = page.path | split: "/" | last -%}
+{%- assign folder_len = page.path.size | minus: page_filename.size -%}
+{%- assign current_folder = page.path | slice: 0, folder_len -%}
 
 {%- assign all_pages = site.pages | sort: "path" | reverse -%}
 {%- for file in all_pages -%}
-  {%- if file.extname == ".md" -%}
-    {%- assign filename = file.path | split: "/" | last -%}
-    {%- assign expected_path = current_folder | append: "/" | append: filename -%}
-    {%- if current_folder != "" and file.path == expected_path -%}
-      {%- if filename contains "_notas" or filename contains "_notes" -%}
-      {
-        url: "{{ file.url | relative_url }}",
-        date: "{{ filename | slice: 0, 8 }}"
-      },
-      {%- endif -%}
+  {%- assign filename = file.path | split: "/" | last -%}
+  {%- assign expected_path = current_folder | append: filename -%}
+  {%- if file.path == expected_path and file.path != page.path -%}
+    {%- if filename contains "_notas.md" or filename contains "_notes.md" -%}
+    {
+      url: "{{ file.url | relative_url }}",
+      date: "{{ filename | slice: 0, 8 }}"
+    },
     {%- endif -%}
   {%- endif -%}
 {%- endfor -%}
-];
+];  
 
 const tbody = document.getElementById('table-body');
 tbody.innerHTML = ''; 
