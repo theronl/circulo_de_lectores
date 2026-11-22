@@ -37,15 +37,16 @@ title: "Combined Reading Group Notes"
   {% assign all_pages = site.pages | sort: "path" | reverse %}
   {%- assign notes_dir = current_dir_name -%}
   {%- comment -%} Print text strings to console {%- endcomment -%}
-  {%- log "--- DEBUG: Starting Static Files Loop ---" -%}
+      <!--   "--- DEBUG: Starting Static Files Loop ---" -->
   {%- for file in all_pages -%}
     {%- if file.dir == current_dir and file.extname == ".md" -%}
       {%- assign filename = file.path | split: "/" | last -%}
       
       {%- if filename contains "_notas" or filename contains "_notes" -%}
-        {
+      { <!--
           url: "{{ file.path | relative_url }}",
           date: "{{ filename | slice: 0, 8 }}"
+        -->
         },
       {%- endif -%}
     {%- endif -%}
