@@ -67,7 +67,7 @@ let filesProcessed = 0;
 
 files.forEach(fileObj => {
   loadAndParsePage(fileObj.url)
-        .then(({ doc, rows }) => {
+        .then(({ doc, rows}) => {
             if (rows) {
                 rows.forEach(cells => {
                     const tr = document.createElement('tr');
