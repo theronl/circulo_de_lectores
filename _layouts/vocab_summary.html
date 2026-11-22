@@ -30,27 +30,36 @@ title: "Combined Reading Group Notes"
 
 <script>
 // 3. Liquid Loop auto-generates the Javascript Array at build time
-  const files = [
-  {% assign current_dir = page.dir %}
-  {% assign current_dir_name =  current_dir | replace: "/", "" | replace: "%20", " " %}
 
-  {% assign all_pages = site.pages | sort: "path" | reverse %}
-  {%- assign notes_dir = current_dir_name -%}
-  {%- comment -%} Print text strings to console {%- endcomment -%}
-      <!--   "--- DEBUG: Starting Static Files Loop ---" -->
-  {%- for file in all_pages -%}
-    {%- if file.dir == current_dir and file.extname == ".md" -%}
-      {%- assign filename = file.path | split: "/" | last -%}
-      
+const files = [
+{%- assign path_parts = page.path | split: "/" -%}
+{%- assign last_index = path_parts.size | minus: 1 -%}
+{%- assign current_folder = "" -%}
+{%- for part in path_parts -%}
+  {%- if forloop.index0 < last_index -%}
+    {%- if current_folder == "" -%}
+      {%- assign current_folder = part -%}
+    {%- else -%}
+      {%- assign current_folder = current_folder | append: "/" | append: part -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign all_pages = site.pages | sort: "path" | reverse -%}
+{%- for file in all_pages -%}
+  {%- if file.extname == ".md" -%}
+    {%- assign filename = file.path | split: "/" | last -%}
+    {%- assign expected_path = current_folder | append: "/" | append: filename -%}
+    {%- if current_folder != "" and file.path == expected_path -%}
       {%- if filename contains "_notas" or filename contains "_notes" -%}
-      { <!--
-          url: "{{ file.path | relative_url }}",
-          date: "{{ filename | slice: 0, 8 }}"
-        -->
-        },
+      {
+        url: "{{ file.url | relative_url }}",
+        date: "{{ filename | slice: 0, 8 }}"
+      },
       {%- endif -%}
     {%- endif -%}
-  {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
 ];
 
 const tbody = document.getElementById('table-body');
