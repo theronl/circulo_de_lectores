@@ -67,9 +67,9 @@ let filesProcessed = 0;
 
 files.forEach(fileObj => {
   loadAndParsePage(fileObj.url)
-        .then(({ doc, firstTable }) => {
-            if (firstTable != null) {
-                firstTable.forEach(cells => {
+        .then(({ doc, rows }) => {
+            if (rows) {
+                rows.forEach(cells => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
               <td class="cell-date">${fileObj.date}</td>
@@ -81,7 +81,7 @@ files.forEach(fileObj => {
                 });
             }
             else {
-                console.log("firstTable is null for file:", fileObj.url);
+                console.log("rows is null for file:", fileObj.url, rows);
             }
         })
         .catch((err) => {
@@ -114,7 +114,7 @@ async function loadAndParsePage(url) {
             [...tr.querySelectorAll("th, td")].map((cell) => cell.textContent.trim()));
   }
   // const headings = [...doc.querySelectorAll("h1, h2")].map((el) => el.textContent.trim());
-  return { doc, firstTable };
+  return { doc, rows };
 }              
               
 // 4. Client-side Real-time Search Engine
