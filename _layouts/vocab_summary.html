@@ -66,50 +66,52 @@ if (files.length === 0) {
 let filesProcessed = 0;
 
 files.forEach(fileObj => {
-  fetch(fileObj.url)
-    .then(response => {
-      if (!response.ok) throw new Error();
-      return response.text();
-    })
-    .then(text => {
-      const lines = text.split('\n');
-      
-      lines.forEach(line => {
-      const trimmed = line.trim();
-      console.log("Processing line from file ", fileObj.url, ": ", line);
-        // Match standard markdown table data row formats (skipping row dividers like |--|--)
-        if (trimmed.startsWith('|') && trimmed.endsWith('|') && !trimmed.includes('---')) {
-          const cells = trimmed.split('|').map(c => c.trim()).filter(c => c !== '');
-          
-          // Clean out table headers if they duplicate in text parsing
-          const cleanFirstCell = cells[0].toLowerCase();
-          if (cleanFirstCell.includes('word') || cleanFirstCell.includes('frase') || cleanFirstCell.includes('palabra')) {
-            return;
-          }
-          
-          if (cells.length >= 2) {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
+  inspectPage(fileObj.url)
+        .then(({ doc, firstTable }) => {
+            firstTable.forEach(cells => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
               <td class="cell-date">${fileObj.date}</td>
               <td class="cell-word"><strong>${cells[0]}</strong></td>
               <td class="cell-trans">${cells[1]}</td>
               <td class="cell-notes">${cells[2] || ''}</td>
             `;
-            tbody.appendChild(tr);
-          }
-        }
-      });
-    })
-    .catch(() => console.error(`Error loading: ${fileObj.url}`))
-    .finally(() => {
-      filesProcessed++;
-      // Enable live filtering tracking once data settles
-      if (filesProcessed === files.length) {
-        initSearchFilter();
-      }
-    });
+                tbody.appendChild(tr);
+            });
+        })
+        .catch((err) => {
+            console.error("Error:", err);
+        })
+        .finally(() => {
+            filesProcessed++;
+            // Enable live filtering tracking once data settles
+            if (filesProcessed === files.length) {
+                initSearchFilter();
+            }
+        });
 });
 
+// 3.5 Grab the page and pull out the first table
+async function loadAndParsePage(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status} fetching ${url}`);
+  }
+
+  const htmlText = await response.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlText, "text/html");
+
+  // Query elements just like the live `document`
+  const firstTable = doc.querySelector("body > table");
+  if (firstTable) {
+      const rows = [...firstTable.querySelectorAll("tr")].map((tr) =>
+            [...tr.querySelectorAll("th, td")].map((cell) => cell.textContent.trim()));
+  }
+  // const headings = [...doc.querySelectorAll("h1, h2")].map((el) => el.textContent.trim());
+  return { doc, firstTable };
+}              
+              
 // 4. Client-side Real-time Search Engine
 function initSearchFilter() {
   const searchInput = document.getElementById('vocab-search');
