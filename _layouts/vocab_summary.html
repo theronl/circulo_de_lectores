@@ -66,7 +66,7 @@ if (files.length === 0) {
 let filesProcessed = 0;
 
 files.forEach(fileObj => {
-  inspectPage(fileObj.url)
+  loadAndParsePage(fileObj.url)
         .then(({ doc, firstTable }) => {
             firstTable.forEach(cells => {
                 const tr = document.createElement('tr');
