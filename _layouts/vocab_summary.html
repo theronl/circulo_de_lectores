@@ -71,7 +71,7 @@ async function getAndParseAllTheThings() {
                     if (cells[0].trim()) {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
-              <td class="cell-date">${fileObj.date}</td>
+              <td class="cell-date">${formatCompactDate(fileObj.date, "es-ES")}</td>
               <td class="cell-word"><strong>${cells[0]}</strong></td>
               <td class="cell-trans">${cells[1]}</td>
               <td class="cell-notes">${cells[2] || ''}</td>
@@ -134,6 +134,32 @@ function initSearchFilter() {
     }
   });
 }
+
+function formatCompactDate(yyyymmdd, locale = "en-US") {
+  const match = /^(\d{4})(\d{2})(\d{2})$/.exec(String(yyyymmdd).trim());
+  if (!match) return String(yyyymmdd);
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+
+  // Construct in local time and verify calendar validity (e.g., rejects month 13 or Feb 30)
+  const date = new Date(year, month - 1, day);
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return String(yyyymmdd);
+  }
+
+  return new Intl.DateTimeFormat(locale, {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+}
+
 </script>
 
       {{ content }}
