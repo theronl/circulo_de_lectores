@@ -70,8 +70,9 @@ async function getAndParseAllTheThings() {
                 for (const cells of rows) {
                     if (cells[0].trim()) {
                         const tr = document.createElement('tr');
+                        // "es-ES"
                         tr.innerHTML = `
-              <td class="cell-date">${formatCompactDate(fileObj.date, "es-ES")}</td>
+              <td class="cell-date">${formatCompactDate(fileObj.date)}</td>
               <td class="cell-word"><strong>${cells[0]}</strong></td>
               <td class="cell-trans">${cells[1]}</td>
               <td class="cell-notes">${cells[2] || ''}</td>
