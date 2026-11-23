@@ -67,7 +67,7 @@ async function getAndParseAllTheThings() {
         try {
             const { doc, rows } = await loadAndParsePage(fileObj.url);
             if (rows) {
-                rows.forEach(cells => {
+                for (const cells of rows) {
                     if (cells[0].trim()) {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
@@ -78,7 +78,7 @@ async function getAndParseAllTheThings() {
             `;
                         tbody.appendChild(tr);
                     }
-                });
+                }
             }
             else {
                 console.log("rows is null for file:", fileObj.url, rows);
@@ -91,7 +91,7 @@ async function getAndParseAllTheThings() {
 
 getAndParseAllTheThings().finally(() => {
     initSearchFilter();
-}
+});
 
 // 3.5 Grab the page and pull out the first table
 async function loadAndParsePage(url) {
