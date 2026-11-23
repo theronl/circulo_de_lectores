@@ -69,7 +69,7 @@ files.forEach(fileObj => {
         .then(({ doc, rows}) => {
             if (rows) {
                 rows.forEach(cells => {
-                    if (cells[0].trim()) {
+                    if (cells[0].trim() && !cells[0].contains("palabra o frace")) {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
               <td class="cell-date">${fileObj.date}</td>
