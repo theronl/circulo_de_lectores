@@ -62,38 +62,38 @@ if (files.length === 0) {
 // Keep track of total outstanding fetch processes to initialize live text searching safely
 let filesProcessed = 0;
 
-files.forEach(fileObj => {
-  loadAndParsePage(fileObj.url)
-        .then(({ doc, rows}) => {
-            if (rows) {
-                rows.forEach(cells => {
-                    if (cells[0].trim()) {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
+for (const fileObj of files) {
+    try {
+        const { doc, rows } = await loadAndParsePage(fileObj.url)
+              .finally(() => {
+                  filesProcessed++;
+                  // Enable live filtering tracking once data settles
+                  if (filesProcessed === files.length) {
+                      initSearchFilter();
+                  }
+              });
+        if (rows) {
+            rows.forEach(cells => {
+                if (cells[0].trim()) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
               <td class="cell-date">${fileObj.date}</td>
               <td class="cell-word"><strong>${cells[0]}</strong></td>
               <td class="cell-trans">${cells[1]}</td>
               <td class="cell-notes">${cells[2] || ''}</td>
             `;
-                        tbody.appendChild(tr);
-                    }
-                });
-            }
-            else {
-                console.log("rows is null for file:", fileObj.url, rows);
-            }
-        })
-        .catch((err) => {
-            console.error("Error:", err);
-        })
-        .finally(() => {
-            filesProcessed++;
-            // Enable live filtering tracking once data settles
-            if (filesProcessed === files.length) {
-                initSearchFilter();
-            }
-        });
-});
+                    tbody.appendChild(tr);
+                }
+            });
+        }
+        else {
+            console.log("rows is null for file:", fileObj.url, rows);
+        }
+    } catch(err) {
+        console.error("Error:", err);
+    }
+}
+
 
 // 3.5 Grab the page and pull out the first table
 async function loadAndParsePage(url) {
