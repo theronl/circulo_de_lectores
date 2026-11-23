@@ -69,7 +69,7 @@ files.forEach(fileObj => {
         .then(({ doc, rows}) => {
             if (rows) {
                 rows.forEach(cells => {
-                    if (cells[0].trim() && !cells[0].toLowerCase().includes("palabra o frace")) {
+                    if (cells[0].trim()) {
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
               <td class="cell-date">${fileObj.date}</td>
@@ -110,7 +110,7 @@ async function loadAndParsePage(url) {
 
   // Query elements just like the live `document`
   const firstTable = doc.querySelector("body table");
-  const rows = firstTable ? [...firstTable.querySelectorAll("tr")].map((tr) =>
+  const rows = firstTable ? [...firstTable.querySelectorAll("tbody tr")].map((tr) =>
       [...tr.querySelectorAll("th, td")].map((cell) => cell.textContent.trim())) : null;
   
   // const headings = [...doc.querySelectorAll("h1, h2")].map((el) => el.textContent.trim());
