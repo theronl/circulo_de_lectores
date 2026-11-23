@@ -28,6 +28,7 @@ title: "Combined Reading Group Notes"
   </tbody>
 </table>
 
+<br /><a href="#" id="export-csv-link">Download as CSV</a>
 <script>
 // 3. Liquid Loop auto-generates the Javascript Array at build time
 
@@ -92,6 +93,7 @@ async function getAndParseAllTheThings() {
 
 getAndParseAllTheThings().finally(() => {
     initSearchFilter();
+    attachCsvExportLink(document.getElementById('table-body'));
 });
 
 // 3.5 Grab the page and pull out the first table
@@ -136,6 +138,27 @@ function initSearchFilter() {
   });
 }
 
+function attachCsvExportLink(table, linkId = "export-csv-link", filename = "vocab_summary.csv") {
+  if (!table) return;
+
+  let link = document.getElementById(linkId);
+  if (!link) {
+    link = document.createElement("a");
+    link.id = linkId;
+    link.href = "#";
+    link.textContent = "Export to CSV";
+    table.parentNode.insertBefore(link, table);
+  }
+
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    const csv = tableToCsv(table);
+    if (csv) {
+      downloadCsv(csv, filename);
+    }
+  });
+}
+
 function formatCompactDate(yyyymmdd, locale = "en-US") {
   const match = /^(\d{4})(\d{2})(\d{2})$/.exec(String(yyyymmdd).trim());
   if (!match) return String(yyyymmdd);
@@ -160,6 +183,7 @@ function formatCompactDate(yyyymmdd, locale = "en-US") {
     year: "numeric",
   }).format(date);
 }
+
 
 </script>
 
