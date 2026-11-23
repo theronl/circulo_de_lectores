@@ -115,7 +115,42 @@ async function loadAndParsePage(url) {
   // const headings = [...doc.querySelectorAll("h1, h2")].map((el) => el.textContent.trim());
   return { doc, rows };
 }              
-              
+
+function escapeCsvCell(value) {
+  const text = String(value ?? "").replace(/\r?\n/g, " ").trim();
+  const escaped = text.replace(/"/g, '""');
+  return /[",\n]/.test(escaped) ? `"${escaped}"` : escaped;
+}
+
+function tableToCsv(table) {
+  if (!table) return "";
+  return [...table.querySelectorAll("tr")]
+    .map((tr) =>
+      [...tr.querySelectorAll("th, td")]
+        .map((cell) => escapeCsvCell(cell.textContent))
+        .join(",")
+    )
+    .join("\n");
+}
+
+function downloadCsv(csvText, filename = "vocab_summary.csv") {
+  // UTF-8 BOM helps Excel open accented Spanish characters cleanly
+  const blob = new Blob(["\uFEFF" + csvText], {
+    type: "text/csv;charset=utf-8;",
+  });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  // Revoke after a tick so the browser finishes starting the download
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 // 4. Client-side Real-time Search Engine
 function initSearchFilter() {
   const searchInput = document.getElementById('vocab-search');
